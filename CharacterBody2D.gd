@@ -11,7 +11,7 @@ var bounce_learned = false
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = 1200
 var direction : Vector2
-var is_busy : bool = false #Char performing action eg dash
+var can_move : bool = true #Char performing action eg dash
 var is_gravity : bool = true #Set to false on dash but not on ghost
 
 func _physics_process(delta):
@@ -36,10 +36,7 @@ func _physics_process(delta):
 	direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 
 	# Handle jump.
-	
-	
-	
-	if Input.is_action_just_pressed("ui_accept") and not is_busy: #TODO Celeste wave dash
+	if Input.is_action_just_pressed("ui_accept") and can_move: #TODO Celeste wave dash
 		if is_on_floor():
 			jump()
 		else:
@@ -49,15 +46,15 @@ func _physics_process(delta):
 		$PreJumpTimer.stop()
 	
 	#Slow player down in air and on ground
-	var direction = Input.get_axis("ui_left", "ui_right")
+	direction = Vector2(Input.get_axis("ui_left", "ui_right"), 0)
 	if is_on_floor():
-		if direction and not is_busy:
-			velocity.x = direction * SPEED # move along ground
+		if direction and can_move:
+			velocity.x = direction.x * SPEED # move along ground
 		else:# either dir is null or is busy
 			velocity.x = move_toward(velocity.x, 0, SPEED/10) #friction on floor
 	else:# not on floor
-		if direction and not is_busy: 
-			velocity.x = move_toward(velocity.x, direction * SPEED, SPEED/10)  #friction in air by player
+		if direction and can_move: 
+			velocity.x = move_toward(velocity.x, direction.x * SPEED, SPEED/10)  #friction in air by player
 		else: # either dir is null or is busy
 			velocity.x = move_toward(velocity.x, 0, SPEED/20) # friction in air alone
 	move_and_slide()

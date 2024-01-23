@@ -75,9 +75,9 @@ func _process(delta):
  
 func _on_dash_timer_timeout():
 	is_dashing = false
-	char.is_busy = false
+	char.can_move = true
 	
 func cancel_dash():
 	is_dashing = false
-	char.is_busy = false
+	char.can_move = true
 	$DashTimer.stop()

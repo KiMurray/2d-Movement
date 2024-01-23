@@ -10,50 +10,59 @@ radius = 38.0
 height = 100.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y3p27"]
-radius = 49.0
-height = 116.0
+radius = 31.0
+height = 94.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k71km"]
 size = Vector2(1146, 53)
 
 [node name="Main" type="Node2D"]
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("dash_component")]
-position = Vector2(319, 438)
+[node name="Knight" type="CharacterBody2D" parent="." node_paths=PackedStringArray("dash_component")]
+position = Vector2(289, 408)
 script = ExtResource("1_flu07")
 dash_component = NodePath("DashComponent")
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Knight"]
 shape = SubResource("CapsuleShape2D_oil7x")
 
-[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Knight"]
 scale = Vector2(0.554688, 0.554688)
 texture = ExtResource("2_hikmb")
 
-[node name="DashComponent" type="Node2D" parent="CharacterBody2D" node_paths=PackedStringArray("char")]
+[node name="DashComponent" type="Node2D" parent="Knight" node_paths=PackedStringArray("char")]
 script = ExtResource("3_dcpiw")
 char = NodePath("..")
 
-[node name="DashTimer" type="Timer" parent="CharacterBody2D/DashComponent"]
+[node name="DashTimer" type="Timer" parent="Knight/DashComponent"]
 wait_time = 0.25
 one_shot = true
 
-[node name="PreJumpTimer" type="Timer" parent="CharacterBody2D"]
+[node name="PreJumpTimer" type="Timer" parent="Knight"]
 wait_time = 0.15
 one_shot = true
 
-[node name="SpiritComponent" type="CharacterBody2D" parent="CharacterBody2D" node_paths=PackedStringArray("char")]
+[node name="SpiritComponent" type="CharacterBody2D" parent="Knight" node_paths=PackedStringArray("knight")]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("4_fk5xm")
-char = NodePath("..")
+knight = NodePath("..")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/SpiritComponent"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Knight/SpiritComponent"]
 shape = SubResource("CapsuleShape2D_y3p27")
 
-[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D/SpiritComponent"]
+[node name="Sprite2D" type="Sprite2D" parent="Knight/SpiritComponent"]
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_hikmb")
+
+[node name="PreJumpTimer" type="Timer" parent="Knight/SpiritComponent"]
+wait_time = 0.15
+one_shot = true
+
+[node name="Area2D" type="Area2D" parent="Knight/SpiritComponent"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Knight/SpiritComponent/Area2D"]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(492, 657)
@@ -93,4 +102,4 @@ metadata/_edit_group_ = true
 position = Vector2(88, 16.5)
 shape = SubResource("RectangleShape2D_k71km")
 
-[connection signal="timeout" from="CharacterBody2D/DashComponent/DashTimer" to="CharacterBody2D/DashComponent" method="_on_dash_timer_timeout"]
+[connection signal="timeout" from="Knight/DashComponent/DashTimer" to="Knight/DashComponent" method="_on_dash_timer_timeout"]

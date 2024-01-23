@@ -1,29 +1,39 @@
 extends CharacterBody2D
 class_name SpritComponent
 
-var is_spirit : bool = true
+var is_spirit : bool = false
 var gravity = 800
+var distance_from_knight: Vector2
 
+const TETHER_RANGE = 500
 const SPEED = 500
 const JUMP_VELOCITY = -400
-@export var char : CharacterBody2D
+@export var knight : CharacterBody2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
 
+func _draw():
+	if is_spirit:
+		draw_line(-position, Vector2.ZERO, Color.RED, 10)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if Input TOGGLE is_Spirit
+	# Spirit Toggle
+	toggle_spirit_listener()
+	#_draw()
 	if is_spirit:
-		# Gravity
-		if not is_on_floor():
-			velocity.y += gravity * delta
+		queue_redraw()
+		# Set vars
+		knight.can_move = false
+		visible = true
+		jump_listener()
+		gravity_process(delta)
 		
-		if not char.is_busy:
-			char.is_busy = true
-			
+		
+		#print(position)
+		
 		var direction = Input.get_axis("ui_left", "ui_right")
 		if is_on_floor(): 
 			if direction:
@@ -35,14 +45,30 @@ func _process(delta):
 				velocity.x = move_toward(velocity.x, direction * SPEED, SPEED/10)  #friction in air by player
 			else:
 				velocity.x = move_toward(velocity.x, 0, SPEED/20) # friction in air alone
-				
-				
-				
-		if Input.is_action_just_pressed("ui_accept"): 
-			if is_on_floor():
-				jump()
+		
+		# End of process
 		move_and_slide()
 
-func jump():
-	print("jumping")
-	velocity.y = JUMP_VELOCITY
+func jump_listener():
+	if Input.is_action_just_pressed("ui_accept"): 
+		if is_on_floor():
+			velocity.y = JUMP_VELOCITY
+		else:
+			$PreJumpTimer.start()
+	# Jump helper
+	if is_on_floor() and $PreJumpTimer.time_left > 0:
+		velocity.y = JUMP_VELOCITY
+		$PreJumpTimer.stop()
+		
+func toggle_spirit_listener():
+	if Input.is_action_just_pressed("switch"):
+		if is_spirit:
+			#set spirit to be knight position
+			position = Vector2(0,0)
+			visible = false
+		is_spirit =  !is_spirit
+		knight.can_move = !knight.can_move
+
+func gravity_process(delta):
+	if not is_on_floor():
+		velocity.y += gravity * delta
