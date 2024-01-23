@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://ddhefp8q0mkwe"]
+
+[ext_resource type="Script" path="res://CharacterBody2D.gd" id="1_dpqxu"]
+[ext_resource type="Texture2D" uid="uid://bd454qw6lkcow" path="res://icon.svg" id="1_mknyr"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oil7x"]
+radius = 64.0
+height = 174.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k71km"]
+size = Vector2(1146, 53)
+
+[node name="Main" type="Node2D"]
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+position = Vector2(491, 426)
+script = ExtResource("1_dpqxu")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("CapsuleShape2D_oil7x")
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
+texture = ExtResource("1_mknyr")
+
+[node name="DashTimer" type="Timer" parent="CharacterBody2D"]
+wait_time = 0.1
+one_shot = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(497, 553)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(88, 16.5)
+shape = SubResource("RectangleShape2D_k71km")
+
+[connection signal="timeout" from="CharacterBody2D/DashTimer" to="CharacterBody2D" method="_on_dash_timer_timeout"]

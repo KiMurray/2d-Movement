@@ -1,0 +1,75 @@
+[gd_scene load_steps=6 format=3 uid="uid://ccpsvphm7o0yp"]
+
+[ext_resource type="Script" path="res://CharacterBody2D.gd" id="1_flu07"]
+[ext_resource type="Texture2D" uid="uid://bd454qw6lkcow" path="res://icon.svg" id="2_hikmb"]
+[ext_resource type="Script" path="res://DashComponent.gd" id="3_dcpiw"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oil7x"]
+radius = 38.0
+height = 100.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k71km"]
+size = Vector2(1146, 53)
+
+[node name="Main" type="Node2D"]
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("dash_component")]
+position = Vector2(351, 502)
+script = ExtResource("1_flu07")
+dash_component = NodePath("DashComponent")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("CapsuleShape2D_oil7x")
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
+scale = Vector2(0.554688, 0.554688)
+texture = ExtResource("2_hikmb")
+
+[node name="DashComponent" type="Node2D" parent="CharacterBody2D" node_paths=PackedStringArray("char")]
+script = ExtResource("3_dcpiw")
+char = NodePath("..")
+
+[node name="DashTimer" type="Timer" parent="CharacterBody2D/DashComponent"]
+wait_time = 0.25
+one_shot = true
+
+[node name="PreJumpTimer" type="Timer" parent="CharacterBody2D"]
+wait_time = 0.15
+one_shot = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(491, 657)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(88, 16.5)
+shape = SubResource("RectangleShape2D_k71km")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(478, -9)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2(88, 16.5)
+shape = SubResource("RectangleShape2D_k71km")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+position = Vector2(1154, 274)
+rotation = 1.57079
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
+position = Vector2(88, 16.5)
+shape = SubResource("RectangleShape2D_k71km")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="."]
+position = Vector2(24, 230)
+rotation = 1.57079
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4"]
+position = Vector2(88, 16.5)
+shape = SubResource("RectangleShape2D_k71km")
+
+[connection signal="timeout" from="CharacterBody2D/DashComponent/DashTimer" to="CharacterBody2D/DashComponent" method="_on_dash_timer_timeout"]
