@@ -72,7 +72,7 @@ func _process(delta):
 		$DashTimer.start(0.25)
 	dash_listener(char.direction, "dash", char.is_on_floor())
 	
-
+ 
 func _on_dash_timer_timeout():
 	is_dashing = false
 	char.is_busy = false
