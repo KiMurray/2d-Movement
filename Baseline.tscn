@@ -16,7 +16,7 @@ size = Vector2(1146, 53)
 [node name="Main" type="Node2D"]
 
 [node name="Knight" type="CharacterBody2D" parent="." node_paths=PackedStringArray("dash_component")]
-position = Vector2(326, 408)
+position = Vector2(326, 401)
 script = ExtResource("1_flu07")
 dash_component = NodePath("DashComponent")
 metadata/_edit_group_ = true
@@ -54,8 +54,8 @@ shape = SubResource("CapsuleShape2D_y3p27")
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_hikmb")
 
-[node name="PreJumpTimer" type="Timer" parent="Knight/SpiritComponent"]
-wait_time = 0.15
+[node name="PreJumpTimer2" type="Timer" parent="Knight/SpiritComponent"]
+wait_time = 2.0
 one_shot = true
 
 [node name="BashComponent" type="Node2D" parent="Knight/SpiritComponent" node_paths=PackedStringArray("knight", "spirit")]
@@ -64,6 +64,8 @@ knight = NodePath("../..")
 spirit = NodePath("..")
 
 [node name="BashTimer" type="Timer" parent="Knight/SpiritComponent/BashComponent"]
+wait_time = 0.2
+one_shot = true
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(492, 657)

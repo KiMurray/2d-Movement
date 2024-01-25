@@ -4,6 +4,7 @@ class_name SpritComponent
 var is_spirit : bool = false
 var gravity = 800
 var knight_to_ghost_vector: Vector2
+var can_move = true
 
 
 const TETHER_RANGE = 100
@@ -20,15 +21,16 @@ func _draw():
 		draw_line(-position, Vector2.ZERO, Color.RED, 10)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):	
+func _process(delta):
 	# Spirit Toggle
+	
 	toggle_spirit_listener()
 	visible = is_spirit
 	#_draw()
-	if is_spirit:
+	if is_spirit and can_move:
+		knight.can_move = false
 		queue_redraw()
 		# Set vars
-		knight.can_move = false
 		jump_listener()
 		gravity_process(delta)
 		
@@ -47,18 +49,19 @@ func _process(delta):
 		
 		position = position.limit_length(200)
 		move_and_slide()
-		# End of process
-		
+	# End of process
+	pass
+	
 func jump_listener():
 	if Input.is_action_just_pressed("ui_accept"): 
 		if is_on_floor():
 			velocity.y = JUMP_VELOCITY
 		else:
-			$PreJumpTimer.start()
+			$PreJumpTimer2.start()
 	# Jump helper
-	if is_on_floor() and $PreJumpTimer.time_left > 0:
+	if is_on_floor() and $PreJumpTimer2.time_left > 0:
 		velocity.y = JUMP_VELOCITY
-		$PreJumpTimer.stop()
+		$PreJumpTimer2.stop()
 		
 func toggle_spirit_listener():
 	if Input.is_action_just_pressed("switch"):
@@ -67,12 +70,13 @@ func toggle_spirit_listener():
 			position = Vector2(0,0)
 			visible = false
 			is_spirit = false
+			
 		else:
 			#Transform into spirit
 			is_spirit = true
 			velocity = Vector2(knight.velocity.x, min(0, knight.velocity.y))
-		knight.can_move = !knight.can_move
-
+		knight.can_move = !is_spirit
+		print("setting knight can move = ", knight.can_move)
 func gravity_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta

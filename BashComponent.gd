@@ -26,13 +26,11 @@ func handle_bash():
 		
 		
 	
-	if Input.is_action_just_pressed("RB"):
+	if Input.is_action_just_pressed("RB") and spirit.is_spirit:
+		spirit.can_move = false
 		# Trigger movement before bash
-		var offset = 0
-		if spirit.is_on_floor():
-			offset = -10
-			print("offset")
-		knight.position += spirit.position + Vector2(0,offset)
+		knight.position += spirit.position
+		
 		
 		spirit.is_spirit = false
 		knight.velocity = spirit.velocity
@@ -41,10 +39,13 @@ func handle_bash():
 		#if bash_angle < 0:
 			#bash_angle += 2*PI 
 		spirit.position = Vector2.ZERO
-		$BashTimer.start(0.2)
+		$BashTimer.start()
 		is_bashing = true
-		#print(knight.position)
+		
 		pass
 
 func _on_bash_timer_timeout():
 	is_bashing = false
+	print("timeout")
+	knight.can_move = true
+	spirit.can_move = true
