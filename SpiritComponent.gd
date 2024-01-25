@@ -3,9 +3,10 @@ class_name SpritComponent
 
 var is_spirit : bool = false
 var gravity = 800
-var distance_from_knight: Vector2
+var knight_to_ghost_vector: Vector2
 
-const TETHER_RANGE = 500
+
+const TETHER_RANGE = 100
 const SPEED = 500
 const JUMP_VELOCITY = -400
 @export var knight : CharacterBody2D
@@ -19,25 +20,22 @@ func _draw():
 		draw_line(-position, Vector2.ZERO, Color.RED, 10)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(delta):	
 	# Spirit Toggle
 	toggle_spirit_listener()
+	visible = is_spirit
 	#_draw()
 	if is_spirit:
 		queue_redraw()
 		# Set vars
 		knight.can_move = false
-		visible = true
 		jump_listener()
 		gravity_process(delta)
-		
-		
-		#print(position)
 		
 		var direction = Input.get_axis("ui_left", "ui_right")
 		if is_on_floor(): 
 			if direction:
-				velocity.x = direction * SPEED # move along ground
+				velocity.x = direction * SPEED  # move along ground
 			else:
 				velocity.x = move_toward(velocity.x, 0, SPEED/10) #friction on floor
 		else:# not on floor
@@ -46,9 +44,11 @@ func _process(delta):
 			else:
 				velocity.x = move_toward(velocity.x, 0, SPEED/20) # friction in air alone
 		
-		# End of process
+		
+		position = position.limit_length(200)
 		move_and_slide()
-
+		# End of process
+		
 func jump_listener():
 	if Input.is_action_just_pressed("ui_accept"): 
 		if is_on_floor():
@@ -66,7 +66,11 @@ func toggle_spirit_listener():
 			#set spirit to be knight position
 			position = Vector2(0,0)
 			visible = false
-		is_spirit =  !is_spirit
+			is_spirit = false
+		else:
+			#Transform into spirit
+			is_spirit = true
+			velocity = Vector2(knight.velocity.x, min(0, knight.velocity.y))
 		knight.can_move = !knight.can_move
 
 func gravity_process(delta):
