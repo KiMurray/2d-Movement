@@ -5,9 +5,14 @@ var is_spirit : bool = false
 var gravity = 800
 var knight_to_ghost_vector: Vector2
 var can_move = true
+var tether_stretch = 0
+var max_tether_stretch = 30
+var prev_dir
+var is_flinging = false
+var fling_learned = true
 
 
-const TETHER_RANGE = 100
+const TETHER_RANGE = 200
 const SPEED = 500
 const JUMP_VELOCITY = -400
 @export var knight : CharacterBody2D
@@ -27,28 +32,52 @@ func _process(delta):
 	toggle_spirit_listener()
 	visible = is_spirit
 	#_draw()
+	if is_spirit:
+		queue_redraw()
 	if is_spirit and can_move:
 		knight.can_move = false
-		queue_redraw()
+		
 		# Set vars
 		jump_listener()
 		gravity_process(delta)
 		
 		var direction = Input.get_axis("ui_left", "ui_right")
+		
 		if is_on_floor(): 
-			if direction:
-				velocity.x = direction * SPEED  # move along ground
-			else:
-				velocity.x = move_toward(velocity.x, 0, SPEED/10) #friction on floor
+			if not is_flinging:
+				if direction:
+					if position.length() > TETHER_RANGE:
+						if fling_learned:
+							tether_stretch = min(tether_stretch +1, max_tether_stretch)
+					velocity.x = direction * SPEED  # move along ground
+					prev_dir = direction
+				else:
+					if tether_stretch > 0: #Fling must be learned for > 0
+						$FlingTimer.start()
+						can_move = false
+						is_flinging = true
+						velocity.x =  500 * -prev_dir
+						tether_stretch -= 1
+						print(velocity.x, "   ", tether_stretch)
+					else:
+						velocity.x = move_toward(velocity.x, 0, SPEED/10) #friction on floor
+						tether_stretch = 0
+			else: #Flinging
+				pass
+				#velocity.x = 1000 * prev_dir
 		else:# not on floor
 			if direction: 
 				velocity.x = move_toward(velocity.x, direction * SPEED, SPEED/10)  #friction in air by player
 			else:
 				velocity.x = move_toward(velocity.x, 0, SPEED/20) # friction in air alone
 		
+		#print("before",position.length())
+		position = position.limit_length(TETHER_RANGE + tether_stretch)
+		#print(position.length())
 		
-		position = position.limit_length(200)
-		move_and_slide()
+	move_and_slide()
+		#print(position.length())
+		
 	# End of process
 	pass
 	
@@ -70,13 +99,19 @@ func toggle_spirit_listener():
 			position = Vector2(0,0)
 			visible = false
 			is_spirit = false
-			
 		else:
 			#Transform into spirit
 			is_spirit = true
 			velocity = Vector2(knight.velocity.x, min(0, knight.velocity.y))
-		knight.can_move = !is_spirit
-		print("setting knight can move = ", knight.can_move)
+		knight.can_move = !is_spirit ## TODO Remove this?
 func gravity_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
+
+
+func _on_fling_timer_timeout():
+	print("I am timiing out ")
+	is_flinging = false
+	can_move = true
+	tether_stretch = 0
+	pass

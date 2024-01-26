@@ -5,6 +5,8 @@ const BASH_SPEED = 1000
 
 var is_bashing : bool = false
 var bash_vector : Vector2
+var bash_learned = false
+
 
 @export var knight : CharacterBody2D
 @export var spirit : SpritComponent
@@ -20,11 +22,11 @@ func _process(delta):
 
 
 func handle_bash():
+	if not bash_learned: #Check if ability learned
+		return
 	if is_bashing:
 		knight.velocity = BASH_SPEED * bash_vector
 		pass
-		
-		
 	
 	if Input.is_action_just_pressed("RB") and spirit.is_spirit:
 		spirit.can_move = false
