@@ -1,5 +1,5 @@
 extends CharacterBody2D
-
+class_name KnightComponent
 @export var dash_component : DashComponent 
 
 
@@ -13,9 +13,11 @@ var gravity = 1200
 var direction : Vector2
 var can_move : bool = true #Char performing action eg dash
 var is_gravity : bool = true #Set to false on dash but not on ghost
+var empty_texture : Texture2D = load("res://Assets/Characters/Empty-Knight.png")
+var full_texture : Texture2D = load("res://Assets/Characters/Full-Knight.png")
 
 func _physics_process(delta):
-	
+	#print(global_position)
 	if Input.is_action_just_pressed("test"):
 		get_tree().reload_current_scene()
 		
@@ -71,6 +73,11 @@ func _physics_process(delta):
 		#move_and_slide()
 		
 		
+func change_texture(index : int):
+	if index == 0: #full
+		$Sprite2D.texture = full_texture
+	else:
+		$Sprite2D.texture = empty_texture
 func jump():
 	print("jumping")
 	velocity.y = JUMP_VELOCITY

@@ -1,11 +1,11 @@
 extends Node2D
 class_name BashComponent
 
-const BASH_SPEED = 1000
+const BASH_SPEED = 500
 
 var is_bashing : bool = false
 var bash_vector : Vector2
-var bash_learned = false
+var bash_learned = true
 
 
 @export var knight : CharacterBody2D
@@ -29,10 +29,11 @@ func handle_bash():
 		pass
 	
 	if Input.is_action_just_pressed("RB") and spirit.is_spirit:
+		
 		spirit.can_move = false
 		# Trigger movement before bash
 		knight.position += spirit.position
-		
+		knight.change_texture(0)
 		
 		spirit.is_spirit = false
 		knight.velocity = spirit.velocity

@@ -1,75 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://ccpsvphm7o0yp"]
+[gd_scene load_steps=3 format=3 uid="uid://ccpsvphm7o0yp"]
 
-[ext_resource type="Script" path="res://CharacterBody2D.gd" id="1_flu07"]
-[ext_resource type="Texture2D" uid="uid://bd454qw6lkcow" path="res://icon.svg" id="2_hikmb"]
-[ext_resource type="Script" path="res://DashComponent.gd" id="3_dcpiw"]
-[ext_resource type="Script" path="res://SpiritComponent.gd" id="4_fk5xm"]
-[ext_resource type="Script" path="res://BashComponent.gd" id="5_vyhsj"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y3p27"]
-radius = 38.0
-height = 108.0
+[ext_resource type="PackedScene" uid="uid://cjddrmj3kyakd" path="res://knight.tscn" id="1_fnp8i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k71km"]
 size = Vector2(1146, 53)
 
 [node name="Main" type="Node2D"]
 
-[node name="Knight" type="CharacterBody2D" parent="." node_paths=PackedStringArray("dash_component")]
-position = Vector2(304, 479)
-script = ExtResource("1_flu07")
-dash_component = NodePath("DashComponent")
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Knight"]
-shape = SubResource("CapsuleShape2D_y3p27")
-
-[node name="Sprite2D" type="Sprite2D" parent="Knight"]
-position = Vector2(1.00136e-05, 1.00136e-05)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_hikmb")
-
-[node name="DashComponent" type="Node2D" parent="Knight" node_paths=PackedStringArray("char")]
-script = ExtResource("3_dcpiw")
-char = NodePath("..")
-
-[node name="DashTimer" type="Timer" parent="Knight/DashComponent"]
-wait_time = 0.25
-one_shot = true
-
-[node name="PreJumpTimer" type="Timer" parent="Knight"]
-wait_time = 0.15
-one_shot = true
-
-[node name="SpiritComponent" type="CharacterBody2D" parent="Knight" node_paths=PackedStringArray("knight")]
-collision_layer = 2
-collision_mask = 2
-script = ExtResource("4_fk5xm")
-knight = NodePath("..")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Knight/SpiritComponent"]
-shape = SubResource("CapsuleShape2D_y3p27")
-
-[node name="Sprite2D" type="Sprite2D" parent="Knight/SpiritComponent"]
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_hikmb")
-
-[node name="PreJumpTimer2" type="Timer" parent="Knight/SpiritComponent"]
-wait_time = 0.15
-one_shot = true
-
-[node name="BashComponent" type="Node2D" parent="Knight/SpiritComponent" node_paths=PackedStringArray("knight", "spirit")]
-script = ExtResource("5_vyhsj")
-knight = NodePath("../..")
-spirit = NodePath("..")
-
-[node name="BashTimer" type="Timer" parent="Knight/SpiritComponent/BashComponent"]
-wait_time = 0.2
-one_shot = true
-
-[node name="FlingTimer" type="Timer" parent="Knight/SpiritComponent"]
-wait_time = 0.2
-one_shot = true
+[node name="Knight" parent="." instance=ExtResource("1_fnp8i")]
+position = Vector2(432, 292)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(492, 657)
@@ -82,7 +21,7 @@ position = Vector2(88, 16.5)
 shape = SubResource("RectangleShape2D_k71km")
 
 [node name="StaticBody2D5" type="StaticBody2D" parent="."]
-position = Vector2(540, 211)
+position = Vector2(-187, 219)
 scale = Vector2(0.0986185, 2.00334)
 collision_layer = 3
 metadata/_edit_group_ = true
@@ -119,7 +58,3 @@ metadata/_edit_group_ = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4"]
 position = Vector2(88, 16.5)
 shape = SubResource("RectangleShape2D_k71km")
-
-[connection signal="timeout" from="Knight/DashComponent/DashTimer" to="Knight/DashComponent" method="_on_dash_timer_timeout"]
-[connection signal="timeout" from="Knight/SpiritComponent/BashComponent/BashTimer" to="Knight/SpiritComponent/BashComponent" method="_on_bash_timer_timeout"]
-[connection signal="timeout" from="Knight/SpiritComponent/FlingTimer" to="Knight/SpiritComponent" method="_on_fling_timer_timeout"]

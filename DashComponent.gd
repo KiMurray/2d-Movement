@@ -17,7 +17,7 @@ var can_dash : bool = false
 var reduce_speed = true
 var dash_direction
 
-@export var char : CharacterBody2D
+@export var char : KnightComponent
 
 func dash_listener(direction : Vector2, input : String, is_on_floor : bool):
 	if Input.is_action_just_pressed(input) and can_dash and not is_dashing and not is_on_floor and dash_learned:
