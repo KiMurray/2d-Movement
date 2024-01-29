@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://e3fwepq4t6f0"]
+[gd_scene load_steps=7 format=3 uid="uid://e3fwepq4t6f0"]
 
 [ext_resource type="Texture2D" uid="uid://2n4fn608gyyq" path="res://Assets/Tile-Sets (64-64).png" id="1_0wuq8"]
 [ext_resource type="PackedScene" uid="uid://m5mbmfql2y3k" path="res://player.tscn" id="2_trufi"]
-[ext_resource type="Script" path="res://Door.gd" id="3_c6vfv"]
-[ext_resource type="PackedScene" uid="uid://d0q5wcdtttj52" path="res://Interactions/Interaction area/interaction_area.tscn" id="5_08s7x"]
+[ext_resource type="Script" path="res://Interactions/Interaction area/interaction_area.gd" id="4_73am5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3jq4h"]
 texture = ExtResource("1_0wuq8")
@@ -1326,11 +1325,7 @@ tile_size = Vector2i(64, 64)
 physics_layer_0/collision_layer = 3
 sources/0 = SubResource("TileSetAtlasSource_3jq4h")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ab3m8"]
-size = Vector2(85, 92)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_mkwkp"]
-size = Vector2(10.5, 164.5)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u2trl"]
 
 [node name="Tilemap" type="TileMap"]
 show_behind_parent = true
@@ -1344,22 +1339,8 @@ layer_1/tile_data = PackedInt32Array(393233, 0, 0, 393232, 0, 0, 393231, 0, 0, 4
 [node name="Player" parent="." instance=ExtResource("2_trufi")]
 position = Vector2(85, 513)
 
-[node name="Door" type="Sprite2D" parent="."]
-script = ExtResource("3_c6vfv")
+[node name="InteractionArea" type="Area2D" parent="."]
+script = ExtResource("4_73am5")
 
-[node name="InteractionArea" parent="Door" instance=ExtResource("5_08s7x")]
-position = Vector2(368, 467)
-collision_mask = 1
-action_name = "touch"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Door/InteractionArea"]
-position = Vector2(-177, 36)
-shape = SubResource("RectangleShape2D_ab3m8")
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Door"]
-position = Vector2(189, 499)
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Door/StaticBody2D"]
-position = Vector2(2, -2)
-shape = SubResource("RectangleShape2D_mkwkp")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+shape = SubResource("RectangleShape2D_u2trl")

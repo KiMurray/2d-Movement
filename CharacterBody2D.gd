@@ -44,7 +44,8 @@ func _physics_process(delta):
 		if is_on_floor():
 			jump()
 		else:
-			$PreJumpTimer.start()
+			$PreJumpTimer.one_shot = true
+			$PreJumpTimer.start(0.15)
 	if is_on_floor() and $PreJumpTimer.time_left > 0:
 		jump()
 		$PreJumpTimer.stop()

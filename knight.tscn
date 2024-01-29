@@ -1,18 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://cjddrmj3kyakd"]
+[gd_scene load_steps=5 format=3 uid="uid://cjddrmj3kyakd"]
 
 [ext_resource type="Script" path="res://CharacterBody2D.gd" id="1_j71wd"]
 [ext_resource type="Texture2D" uid="uid://lnpmylrvwd52" path="res://Assets/Characters/Full-Knight.png" id="2_vwxn0"]
 [ext_resource type="Script" path="res://DashComponent.gd" id="3_arxlr"]
-[ext_resource type="Script" path="res://SpiritComponent.gd" id="4_1lu0n"]
-[ext_resource type="Texture2D" uid="uid://cqs1xwvsbu20d" path="res://Assets/Characters/Ghost.png" id="5_jb77c"]
-[ext_resource type="Script" path="res://BashComponent.gd" id="6_tnuqv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q1yed"]
 size = Vector2(52.9065, 84.4384)
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y3p27"]
-radius = 5.09015
-height = 231.286
 
 [node name="Knight" type="CharacterBody2D" node_paths=PackedStringArray("dash_component")]
 top_level = true
@@ -42,39 +35,4 @@ one_shot = true
 wait_time = 0.15
 one_shot = true
 
-[node name="SpiritComponent" type="CharacterBody2D" parent="." node_paths=PackedStringArray("knight")]
-collision_layer = 2
-collision_mask = 2
-script = ExtResource("4_1lu0n")
-knight = NodePath("..")
-
-[node name="CollisionShape2D1" type="CollisionShape2D" parent="SpiritComponent"]
-position = Vector2(-1, 23)
-scale = Vector2(3.53624, -0.475602)
-shape = SubResource("CapsuleShape2D_y3p27")
-
-[node name="Sprite2D" type="Sprite2D" parent="SpiritComponent"]
-position = Vector2(3, 12)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("5_jb77c")
-
-[node name="PreJumpTimer2" type="Timer" parent="SpiritComponent"]
-wait_time = 0.15
-one_shot = true
-
-[node name="BashComponent" type="Node2D" parent="SpiritComponent" node_paths=PackedStringArray("knight", "spirit")]
-script = ExtResource("6_tnuqv")
-knight = NodePath("../..")
-spirit = NodePath("..")
-
-[node name="BashTimer" type="Timer" parent="SpiritComponent/BashComponent"]
-wait_time = 0.2
-one_shot = true
-
-[node name="FlingTimer" type="Timer" parent="SpiritComponent"]
-wait_time = 0.2
-one_shot = true
-
 [connection signal="timeout" from="DashComponent/DashTimer" to="DashComponent" method="_on_dash_timer_timeout"]
-[connection signal="timeout" from="SpiritComponent/BashComponent/BashTimer" to="SpiritComponent/BashComponent" method="_on_bash_timer_timeout"]
-[connection signal="timeout" from="SpiritComponent/FlingTimer" to="SpiritComponent" method="_on_fling_timer_timeout"]

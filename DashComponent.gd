@@ -17,7 +17,7 @@ var can_dash : bool = false
 var reduce_speed = true
 var dash_direction
 
-@export var char : KnightComponent
+@export var knight : KnightComponent
 
 func dash_listener(direction : Vector2, input : String, is_on_floor : bool):
 	if Input.is_action_just_pressed(input) and can_dash and not is_dashing and not is_on_floor and dash_learned:
@@ -27,9 +27,9 @@ func dash_listener(direction : Vector2, input : String, is_on_floor : bool):
 		if not direction == Vector2(0,0):
 			$DashTimer.start()
 			is_dashing = true
-			char.is_busy = true
+			knight.is_busy = true
 			can_dash = false
-			char.velocity = direction * DASH_SPEED * 2 
+			knight.velocity = direction * DASH_SPEED * 2 
 
 func round_direction(deg : float) -> Vector2:
 	if deg == -180:
@@ -67,17 +67,18 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	if char.is_on_floor():
+	if knight.is_on_floor():
 		can_dash = true
+		$DashTimer.one_shot = true
 		$DashTimer.start(0.25)
-	dash_listener(char.direction, "dash", char.is_on_floor())
+	dash_listener(knight.direction, "dash", knight.is_on_floor())
 	
  
 func _on_dash_timer_timeout():
 	is_dashing = false
-	char.can_move = true
+	knight.can_move = true
 	
 func cancel_dash():
 	is_dashing = false
-	char.can_move = true
+	knight.can_move = true
 	$DashTimer.stop()

@@ -1,5 +1,5 @@
 extends CharacterBody2D
-class_name SpritComponent
+class_name SpiritComponent
 
 var is_spirit : bool = false
 var gravity = 800
@@ -12,7 +12,7 @@ var is_flinging = false
 var fling_learned = false
 var direction
 #a mode where ghost has no g. if no dir always friction
-var ghost_grav = false
+var ghost_grav = true
 
 const TETHER_RANGE = 200
 const SPEED = 500
@@ -23,10 +23,11 @@ const JUMP_VELOCITY = -400
 func _ready():
 	pass # Replace with function body.
 
-func _draw():
-	if is_spirit:
-		draw_line(-position, Vector2.ZERO, Color.RED, 10)
-
+#func _draw():
+	#if is_spirit:
+		#$Player.draw_line(position, knight.global_position,  Color.RED, 10)
+		#draw_line(Vector2(global_position.x, -global_position.y),Vector2(knight.global_position.x, -knight.global_position.y), Color.RED, 10)
+		#print(Vector2(global_position.x, global_position.y), Vector2(knight.global_position.x, -knight.global_position.y))
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	# Spirit Toggle
@@ -34,8 +35,7 @@ func _process(delta):
 	toggle_spirit_listener()
 	visible = is_spirit
 	#_draw()
-	if is_spirit:
-		queue_redraw()
+	
 	if is_spirit and can_move:
 		knight.can_move = false
 		
@@ -62,18 +62,18 @@ func toggle_spirit_listener():
 	if Input.is_action_just_pressed("switch"):
 		if is_spirit: ## switching back to knight
 			knight.change_texture(0)
-			position = Vector2.ZERO
+			position = knight.position
 			visible = false
 			is_spirit = false
 		else:#Transform into spirit
 			knight.change_texture(1)
-			position = Vector2.ZERO
+			position = knight.position
 			is_spirit = true
 		knight.can_move = !is_spirit ## TODO Remove this?
 func gravity_process(delta):
-	if not is_on_floor() and not ghost_grav:
+	if not is_on_floor():
 		velocity.y += gravity * delta
-
+	
 func handle_movement():
 	direction = Input.get_axis("ui_left", "ui_right")
 	if is_on_floor(): 
@@ -103,10 +103,6 @@ func handle_movement():
 			velocity.x = move_toward(velocity.x, direction * SPEED, SPEED/10)  #friction in air by player
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED/20) # friction in air alone
-	
-	#print("before",position.length())
-	position = position.limit_length(TETHER_RANGE + tether_stretch)
-	#print(position.length())
 	
 	move_and_slide()
 

@@ -1,0 +1,83 @@
+[gd_scene load_steps=11 format=3 uid="uid://m5mbmfql2y3k"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_n0y6j"]
+[ext_resource type="Script" path="res://SpiritComponent.gd" id="1_vvw7o"]
+[ext_resource type="Texture2D" uid="uid://cqs1xwvsbu20d" path="res://Assets/Characters/Ghost.png" id="2_n7kry"]
+[ext_resource type="Script" path="res://BashComponent.gd" id="3_jbikm"]
+[ext_resource type="Script" path="res://CharacterBody2D.gd" id="4_vdp31"]
+[ext_resource type="Texture2D" uid="uid://lnpmylrvwd52" path="res://Assets/Characters/Full-Knight.png" id="5_5s5it"]
+[ext_resource type="Script" path="res://DashComponent.gd" id="6_b21iv"]
+[ext_resource type="PackedScene" uid="uid://x15im5ym0mse" path="res://Interactions/InteractionManager.tscn" id="8_hnx0s"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_umcy4"]
+radius = 5.09015
+height = 239.696
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nxvta"]
+size = Vector2(31, 115)
+
+[node name="Player" type="Node2D"]
+z_index = 99
+script = ExtResource("1_n0y6j")
+metadata/_edit_group_ = true
+
+[node name="Spirit" type="CharacterBody2D" parent="." node_paths=PackedStringArray("knight")]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_vvw7o")
+knight = NodePath("../Knight")
+
+[node name="CollisionShape2D1" type="CollisionShape2D" parent="Spirit"]
+position = Vector2(-2.38419e-07, 1.99995)
+scale = Vector2(3.53624, -0.475602)
+shape = SubResource("CapsuleShape2D_umcy4")
+
+[node name="Sprite2D" type="Sprite2D" parent="Spirit"]
+position = Vector2(4, -5.00002)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("2_n7kry")
+
+[node name="PreJumpTimer2" type="Timer" parent="Spirit"]
+wait_time = 0.15
+one_shot = true
+
+[node name="BashComponent" type="Node2D" parent="Spirit" node_paths=PackedStringArray("knight", "spirit")]
+script = ExtResource("3_jbikm")
+knight = NodePath("../../Knight")
+spirit = NodePath("..")
+
+[node name="BashTimer" type="Timer" parent="Spirit/BashComponent"]
+wait_time = 0.1
+one_shot = true
+
+[node name="FlingTimer" type="Timer" parent="Spirit"]
+wait_time = 0.2
+one_shot = true
+
+[node name="Knight" type="CharacterBody2D" parent="." node_paths=PackedStringArray("dash_component")]
+script = ExtResource("4_vdp31")
+dash_component = NodePath("DashComponent")
+
+[node name="Sprite2D" type="Sprite2D" parent="Knight"]
+position = Vector2(3, -20)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("5_5s5it")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Knight"]
+shape = SubResource("RectangleShape2D_nxvta")
+
+[node name="DashComponent" type="Node2D" parent="Knight" node_paths=PackedStringArray("knight")]
+script = ExtResource("6_b21iv")
+knight = NodePath("..")
+
+[node name="DashTimer" type="Timer" parent="Knight/DashComponent"]
+one_shot = true
+
+[node name="PreJumpTimer" type="Timer" parent="Knight"]
+one_shot = true
+
+[node name="InteractionManager" parent="Knight" node_paths=PackedStringArray("knight") instance=ExtResource("8_hnx0s")]
+knight = NodePath("..")
+
+[connection signal="timeout" from="Spirit/BashComponent/BashTimer" to="Spirit/BashComponent" method="_on_bash_timer_timeout"]
+[connection signal="timeout" from="Spirit/FlingTimer" to="Spirit" method="_on_fling_timer_timeout"]
