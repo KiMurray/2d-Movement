@@ -1,0 +1,127 @@
+[gd_scene load_steps=4 format=3 uid="uid://bo36gnesp05to"]
+
+[ext_resource type="Texture2D" uid="uid://b6hokx5pf6x6c" path="res://Assets/testTileset.png" id="1_woi50"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_scip2"]
+texture = ExtResource("1_woi50")
+1:1/0 = 0
+1:1/0/terrain_set = 0
+1:1/0/terrain = 0
+1:1/0/terrains_peering_bit/right_side = 0
+1:1/0/terrains_peering_bit/bottom_right_corner = 0
+1:1/0/terrains_peering_bit/bottom_side = 0
+1:1/0/terrains_peering_bit/bottom_left_corner = 0
+1:1/0/terrains_peering_bit/left_side = 0
+1:1/0/terrains_peering_bit/top_left_corner = 0
+1:1/0/terrains_peering_bit/top_side = 0
+1:1/0/terrains_peering_bit/top_right_corner = 0
+0:0/0 = 0
+0:0/0/terrain_set = 0
+0:0/0/terrain = 0
+0:0/0/terrains_peering_bit/right_side = 0
+0:0/0/terrains_peering_bit/bottom_right_corner = 0
+0:0/0/terrains_peering_bit/bottom_side = 0
+1:0/0 = 0
+1:0/0/terrain_set = 0
+1:0/0/terrain = 0
+1:0/0/terrains_peering_bit/right_side = 0
+1:0/0/terrains_peering_bit/bottom_right_corner = 0
+1:0/0/terrains_peering_bit/bottom_side = 0
+1:0/0/terrains_peering_bit/bottom_left_corner = 0
+1:0/0/terrains_peering_bit/left_side = 0
+2:1/0 = 0
+2:1/0/terrain_set = 0
+2:1/0/terrain = 0
+2:1/0/terrains_peering_bit/bottom_side = 0
+2:1/0/terrains_peering_bit/bottom_left_corner = 0
+2:1/0/terrains_peering_bit/left_side = 0
+2:1/0/terrains_peering_bit/top_left_corner = 0
+2:1/0/terrains_peering_bit/top_side = 0
+2:2/0 = 0
+2:2/0/terrain_set = 0
+2:2/0/terrain = 0
+2:2/0/terrains_peering_bit/left_side = 0
+2:2/0/terrains_peering_bit/top_left_corner = 0
+2:2/0/terrains_peering_bit/top_side = 0
+1:2/0 = 0
+1:2/0/terrain_set = 0
+1:2/0/terrain = 0
+1:2/0/terrains_peering_bit/right_side = 0
+1:2/0/terrains_peering_bit/left_side = 0
+1:2/0/terrains_peering_bit/top_left_corner = 0
+1:2/0/terrains_peering_bit/top_side = 0
+1:2/0/terrains_peering_bit/top_right_corner = 0
+0:2/0 = 0
+0:2/0/terrain_set = 0
+0:2/0/terrain = 0
+0:2/0/terrains_peering_bit/right_side = 0
+0:2/0/terrains_peering_bit/top_side = 0
+0:2/0/terrains_peering_bit/top_right_corner = 0
+0:1/0 = 0
+0:1/0/terrain_set = 0
+0:1/0/terrain = 0
+0:1/0/terrains_peering_bit/right_side = 0
+0:1/0/terrains_peering_bit/bottom_right_corner = 0
+0:1/0/terrains_peering_bit/bottom_side = 0
+0:1/0/terrains_peering_bit/top_side = 0
+0:1/0/terrains_peering_bit/top_right_corner = 0
+2:0/0 = 0
+2:0/0/terrain_set = 0
+2:0/0/terrain = 0
+2:0/0/terrains_peering_bit/bottom_side = 0
+2:0/0/terrains_peering_bit/bottom_left_corner = 0
+2:0/0/terrains_peering_bit/left_side = 0
+3:1/0 = 0
+3:1/0/terrain_set = 0
+3:1/0/terrain = 0
+3:1/0/terrains_peering_bit/right_side = 0
+3:1/0/terrains_peering_bit/bottom_side = 0
+3:1/0/terrains_peering_bit/bottom_left_corner = 0
+3:1/0/terrains_peering_bit/left_side = 0
+3:1/0/terrains_peering_bit/top_left_corner = 0
+3:1/0/terrains_peering_bit/top_side = 0
+3:1/0/terrains_peering_bit/top_right_corner = 0
+4:1/0 = 0
+4:1/0/terrain_set = 0
+4:1/0/terrain = 0
+4:1/0/terrains_peering_bit/right_side = 0
+4:1/0/terrains_peering_bit/bottom_right_corner = 0
+4:1/0/terrains_peering_bit/bottom_side = 0
+4:1/0/terrains_peering_bit/left_side = 0
+4:1/0/terrains_peering_bit/top_left_corner = 0
+4:1/0/terrains_peering_bit/top_side = 0
+4:1/0/terrains_peering_bit/top_right_corner = 0
+4:2/0 = 0
+4:2/0/terrain_set = 0
+4:2/0/terrain = 0
+4:2/0/terrains_peering_bit/right_side = 0
+4:2/0/terrains_peering_bit/bottom_right_corner = 0
+4:2/0/terrains_peering_bit/bottom_side = 0
+4:2/0/terrains_peering_bit/bottom_left_corner = 0
+4:2/0/terrains_peering_bit/left_side = 0
+4:2/0/terrains_peering_bit/top_side = 0
+4:2/0/terrains_peering_bit/top_right_corner = 0
+3:2/0 = 0
+3:2/0/terrain_set = 0
+3:2/0/terrain = 0
+3:2/0/terrains_peering_bit/right_side = 0
+3:2/0/terrains_peering_bit/bottom_right_corner = 0
+3:2/0/terrains_peering_bit/bottom_side = 0
+3:2/0/terrains_peering_bit/bottom_left_corner = 0
+3:2/0/terrains_peering_bit/left_side = 0
+3:2/0/terrains_peering_bit/top_left_corner = 0
+3:2/0/terrains_peering_bit/top_side = 0
+
+[sub_resource type="TileSet" id="TileSet_8u5uu"]
+terrain_set_0/mode = 0
+terrain_set_0/terrain_0/name = "Autotile 0"
+terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+sources/0 = SubResource("TileSetAtlasSource_scip2")
+
+[node name="TestTilemap" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+scale = Vector2(4, 4)
+tile_set = SubResource("TileSet_8u5uu")
+format = 2
+layer_0/tile_data = PackedInt32Array(131078, 65536, 0, 262149, 65536, 1, 262148, 0, 1, 196612, 0, 1, 196613, 65536, 1, 196614, 65536, 1, 327685, 65536, 1, 393221, 65536, 1, 327684, 0, 1, 393220, 0, 1, 131077, 65536, 0, 131079, 65536, 0, 524295, 65536, 2, 524294, 65536, 2, 262152, 131072, 1, 458760, 131072, 1, 196616, 131072, 1, 393222, 65536, 1, 327686, 65536, 1, 262150, 65536, 1, 262151, 65536, 1, 393224, 131072, 1, 327687, 65536, 1, 393223, 65536, 1, 458759, 65536, 1, 458758, 65536, 1, 327688, 131072, 1, 458757, 65536, 1, 196615, 65536, 1, 458756, 0, 1, 524293, 65536, 2, 131076, 0, 0, 131080, 131072, 0, 524292, 0, 2, 524296, 131072, 2, 524302, 131072, 2, 458766, 131072, 1, 327694, 131072, 1, 262158, 131072, 0, 327692, 65536, 1, 458765, 65536, 1, 327693, 65536, 1, 393229, 65536, 1, 262157, 65536, 0, 262156, 65536, 0, 393230, 131072, 1, 524301, 65536, 2, 524300, 65536, 2, 524299, 0, 2, 393227, 0, 1, 458763, 0, 1, 393228, 65536, 1, 327691, 0, 1, 458764, 65536, 1, 262155, 0, 0, 196608, 65536, 2, 196609, 65536, 2, 196610, 131072, 2, 65537, 65536, 0, 65538, 131072, 0, 131074, 131072, 1, 327681, 65536, 0, 327680, 0, 0, 393216, 0, 2, 393217, 65536, 2, 393218, 131072, 2, 327682, 131072, 0, 131072, 65536, 1, 65536, 65536, 0, 131073, 65536, 1, 131071, 0, 0, 196607, 0, 1, 262143, 0, 2, -131068, 0, 0, -65532, 0, 2, -65531, 65536, 2, -65530, 65536, 2, -65529, 131072, 2, -131065, 131072, 0, -131066, 65536, 0, -131067, 65536, 0, -196595, 131072, 0, -196596, 65536, 0, -196597, 65536, 0, -196598, 0, 0, -131062, 0, 1, -65526, 0, 2, -65525, 65536, 2, -65524, 65536, 2, -65523, 131072, 2, -131059, 131072, 1, -131061, 65536, 1, -131060, 65536, 1)
