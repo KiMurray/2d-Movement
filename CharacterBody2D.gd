@@ -11,13 +11,14 @@ var bounce_learned = false
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = 1200
 var direction : Vector2
+var prev_dir : Vector2
+
 var can_move : bool = true #Char performing action eg dash
 var is_gravity : bool = true #Set to false on dash but not on ghost
 var empty_texture : Texture2D = load("res://Assets/Characters/Empty-Knight.png")
 var full_texture : Texture2D = load("res://Assets/Characters/Full-Knight.png")
 
 func _physics_process(delta):
-	#print(global_position)
 	if Input.is_action_just_pressed("test"):
 		get_tree().reload_current_scene()
 		
@@ -26,11 +27,12 @@ func _physics_process(delta):
 			velocity.x = 800
 		if velocity.x < -800:
 			velocity.x = -800
-		
+	
 		if velocity.y > 800:
 			velocity.y = 800
 		if velocity.y < -800:
 			velocity.y = -800
+	
 	# Add the gravity.
 	if is_on_floor():
 		velocity.y -= 0
@@ -40,7 +42,7 @@ func _physics_process(delta):
 	direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 
 	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and can_move: #TODO Celeste wave dash
+	if Input.is_action_just_pressed("ui_accept") and can_move:
 		if is_on_floor():
 			jump()
 		else:
@@ -52,6 +54,8 @@ func _physics_process(delta):
 	
 	#Slow player down in air and on ground
 	direction = Vector2(Input.get_axis("ui_left", "ui_right"), 0)
+	handle_sprite_flip()
+	
 	if is_on_floor():
 		if direction and can_move:
 			velocity.x = direction.x * SPEED # move along ground
@@ -84,7 +88,14 @@ func jump():
 	velocity.y = JUMP_VELOCITY
 	pass
 	
+func handle_sprite_flip():
+	if can_move:
+		if direction.x > 0:
+			$Sprite2D.flip_h = false
+		elif direction.x < 0:
+			$Sprite2D.flip_h = true
+
 func _ready(): 
-	dash_component.dash_learned = false
+	#dash_component.dash_learned = false
 	pass
 

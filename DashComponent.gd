@@ -10,26 +10,25 @@ const LEFT = Vector2(-1,0)
 const UP = Vector2(0,-1)
 const DOWN = Vector2(0,1)
 const DASH_SPEED = 500
-var dash_learned : bool = false
+var dash_learned : bool = true
 var is_dashing : bool = false
 var can_dash : bool = false
 
 var reduce_speed = true
 var dash_direction
 
-@export var knight : KnightComponent
+@export var spirit : SpiritComponent
 
-func dash_listener(direction : Vector2, input : String, is_on_floor : bool):
-	if Input.is_action_just_pressed(input) and can_dash and not is_dashing and not is_on_floor and dash_learned:
-		print("pressed")
+func dash_listener(direction : Vector2, is_on_floor : bool):
+	if Input.is_action_just_pressed("dash") and can_dash and not is_dashing and not is_on_floor and spirit.is_untethered:
+		print("dashing")
 		direction = round_direction(round(rad_to_deg(-direction.angle())))
 		dash_direction = direction
 		if not direction == Vector2(0,0):
-			$DashTimer.start()
+			$DashTimer.start(0.25)
 			is_dashing = true
-			knight.is_busy = true
 			can_dash = false
-			knight.velocity = direction * DASH_SPEED * 2 
+			spirit.velocity = direction * DASH_SPEED * 2 
 
 func round_direction(deg : float) -> Vector2:
 	if deg == -180:
@@ -66,19 +65,23 @@ func _ready():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
-	if knight.is_on_floor():
+	if not dash_learned:
+		return
+	if not spirit.direction:
+		return
+	if spirit.is_on_floor():
 		can_dash = true
-		$DashTimer.one_shot = true
-		$DashTimer.start(0.25)
-	dash_listener(knight.direction, "dash", knight.is_on_floor())
+		#$DashTimer.one_shot = true
+		#$DashTimer.start(0.25)
+		
+	dash_listener(spirit.direction, spirit.is_on_floor())
 	
  
 func _on_dash_timer_timeout():
 	is_dashing = false
-	knight.can_move = true
+	spirit.can_move = true
 	
-func cancel_dash():
-	is_dashing = false
-	knight.can_move = true
-	$DashTimer.stop()
+#func cancel_dash():
+	#is_dashing = false
+	#spirit.can_move = true
+	#$DashTimer.stop()

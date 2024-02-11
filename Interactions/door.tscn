@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://dgtn7u0vpmvu1"]
+
+[ext_resource type="Texture2D" uid="uid://bd454qw6lkcow" path="res://icon.svg" id="1_aub58"]
+[ext_resource type="Script" path="res://Door.gd" id="2_kbvbn"]
+[ext_resource type="PackedScene" uid="uid://d0q5wcdtttj52" path="res://Interactions/Interaction area/interaction_area.tscn" id="3_og8j2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ab3m8"]
+size = Vector2(577.346, 247.849)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mkwkp"]
+size = Vector2(8.75685, 173.402)
+
+[node name="Door" type="Sprite2D"]
+position = Vector2(189, 504)
+scale = Vector2(0.570313, 1.03125)
+texture = ExtResource("1_aub58")
+script = ExtResource("2_kbvbn")
+metadata/_edit_group_ = true
+
+[node name="InteractionArea" parent="." instance=ExtResource("3_og8j2")]
+collision_mask = 1
+action_name = "open"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+position = Vector2(3.76244e-06, 0)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_ab3m8")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(0, -4.84848)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-0.871582, 4.45074)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_mkwkp")

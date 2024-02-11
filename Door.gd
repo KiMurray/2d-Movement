@@ -8,5 +8,6 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _on_interact():
 	print(" yo dawgggg")
-	$StaticBody2D/CollisionShape2D.disabled = true
+	$StaticBody2D/CollisionShape2D.disabled = !$StaticBody2D/CollisionShape2D.disabled
+	self.visible = !self.visible
 	pass

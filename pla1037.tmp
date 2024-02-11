@@ -3,11 +3,11 @@
 [ext_resource type="Script" path="res://player.gd" id="1_n0y6j"]
 [ext_resource type="Script" path="res://SpiritComponent.gd" id="1_vvw7o"]
 [ext_resource type="Texture2D" uid="uid://cqs1xwvsbu20d" path="res://Assets/Characters/Ghost.png" id="2_n7kry"]
-[ext_resource type="PackedScene" uid="uid://b23uy8xx2kumr" path="res://CharacterBody2D Components/dash_component.tscn" id="4_3hgsw"]
+[ext_resource type="Script" path="res://BashComponent.gd" id="3_jbikm"]
 [ext_resource type="Script" path="res://CharacterBody2D.gd" id="4_vdp31"]
 [ext_resource type="Texture2D" uid="uid://lnpmylrvwd52" path="res://Assets/Characters/Full-Knight.png" id="5_5s5it"]
-[ext_resource type="PackedScene" uid="uid://col01vddutnsd" path="res://CharacterBody2D Components/bash_component.tscn" id="7_nk8bm"]
-[ext_resource type="PackedScene" uid="uid://b46agkvau0im8" path="res://CharacterBody2D Components/untethered_component.tscn" id="8_f8kbr"]
+[ext_resource type="Script" path="res://DashComponent.gd" id="6_b21iv"]
+[ext_resource type="Script" path="res://UntetheredComponent.gd" id="8_xtox5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nxvta"]
 size = Vector2(31, 115)
@@ -21,9 +21,10 @@ z_index = 99
 script = ExtResource("1_n0y6j")
 metadata/_edit_group_ = true
 
-[node name="Knight" type="CharacterBody2D" parent="." groups=["player"]]
+[node name="Knight" type="CharacterBody2D" parent="." node_paths=PackedStringArray("dash_component") groups=["player"]]
 collision_mask = 4
 script = ExtResource("4_vdp31")
+dash_component = NodePath("DashComponent")
 
 [node name="Sprite2D" type="Sprite2D" parent="Knight"]
 position = Vector2(3, -20)
@@ -33,15 +34,21 @@ texture = ExtResource("5_5s5it")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Knight"]
 shape = SubResource("RectangleShape2D_nxvta")
 
+[node name="DashComponent" type="Node2D" parent="Knight" node_paths=PackedStringArray("knight")]
+script = ExtResource("6_b21iv")
+knight = NodePath("..")
+
+[node name="DashTimer" type="Timer" parent="Knight/DashComponent"]
+one_shot = true
+
 [node name="PreJumpTimer" type="Timer" parent="Knight"]
 one_shot = true
 
-[node name="Spirit" type="CharacterBody2D" parent="." node_paths=PackedStringArray("knight", "dash_component")]
+[node name="Spirit" type="CharacterBody2D" parent="." node_paths=PackedStringArray("knight")]
 collision_layer = 2
 collision_mask = 12
 script = ExtResource("1_vvw7o")
 knight = NodePath("../Knight")
-dash_component = NodePath("DashComponent")
 
 [node name="CollisionShape2D1" type="CollisionShape2D" parent="Spirit"]
 position = Vector2(-2.38419e-07, 1.99995)
@@ -57,20 +64,22 @@ texture = ExtResource("2_n7kry")
 wait_time = 0.15
 one_shot = true
 
-[node name="BashComponent" parent="Spirit" node_paths=PackedStringArray("knight", "spirit") instance=ExtResource("7_nk8bm")]
+[node name="BashComponent" type="Node2D" parent="Spirit" node_paths=PackedStringArray("knight", "spirit")]
+script = ExtResource("3_jbikm")
 knight = NodePath("../../Knight")
 spirit = NodePath("..")
+
+[node name="BashTimer" type="Timer" parent="Spirit/BashComponent"]
+wait_time = 0.1
+one_shot = true
 
 [node name="FlingTimer" type="Timer" parent="Spirit"]
 wait_time = 0.2
 one_shot = true
 
-[node name="UntetheredComponent" parent="Spirit" node_paths=PackedStringArray("spirit") instance=ExtResource("8_f8kbr")]
+[node name="UntetheredComponent" type="Node2D" parent="Spirit" node_paths=PackedStringArray("spirit")]
+script = ExtResource("8_xtox5")
 spirit = NodePath("..")
 
-[node name="DashComponent" parent="Spirit" node_paths=PackedStringArray("spirit") instance=ExtResource("4_3hgsw")]
-spirit = NodePath("..")
-
-[node name="PlayerStateMachine" type="Node" parent="."]
-
+[connection signal="timeout" from="Spirit/BashComponent/BashTimer" to="Spirit/BashComponent" method="_on_bash_timer_timeout"]
 [connection signal="timeout" from="Spirit/FlingTimer" to="Spirit" method="_on_fling_timer_timeout"]
